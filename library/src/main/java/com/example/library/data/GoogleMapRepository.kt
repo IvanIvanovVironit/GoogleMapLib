@@ -7,8 +7,8 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-@Singleton
-class GoogleMapRepository @Inject constructor(private val api: GoogleMapApi)  {
+//@Singleton
+class GoogleMapRepository (private val api: GoogleMapApi)  {
 
     suspend fun getInfo(id: String): Result<PlaceInfo> {
         return try {

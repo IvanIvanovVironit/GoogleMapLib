@@ -29,12 +29,14 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.maps.android.PolyUtil
 import kotlinx.coroutines.coroutineScope
 import okhttp3.Route
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import javax.inject.Inject
 
 class MapsUtil {
 
-    @Inject lateinit var repository: GoogleMapRepository
+    private var repository: GoogleMapRepository? = null
 
     companion object {
         private const val DEFAULT_ZOOM = 15
@@ -163,7 +165,15 @@ class MapsUtil {
     }
 
     suspend fun getRoutes (origin: String, destination: String): List<Routes>? {
-        when (val result = repository.getRoutes(origin, destination)) {
+
+        val provideRetrofitLib: Retrofit =
+        Retrofit.Builder()
+            .baseUrl(GoogleMapApi.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        repository = GoogleMapRepository(provideGoogleApiLib(provideRetrofitLib))
+        when (val result = repository!!.getRoutes(origin, destination)) {
             is Result.Success -> {
                 return result.value
             }
@@ -174,6 +184,9 @@ class MapsUtil {
             }
         }
     }
+
+    fun provideGoogleApiLib(retrofit: Retrofit): GoogleMapApi =
+        retrofit.create(GoogleMapApi::class.java)
 
     fun geoLocate(searchString: String, typeMarker: Int, context: Context) {
         Log.d(TAG, "geoLocate: geolocating")
