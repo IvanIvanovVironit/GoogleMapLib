@@ -58,8 +58,8 @@ class MapsUtil {
     private var startLocation: String? = null
     private var travelMode: String? = null
 
-    private var placeIdOrigin: String? = null
-    private var placeIdDirection: String? = null
+//    private var placeIdOrigin: String? = null
+//    private var placeIdDirection: String? = null
     private var markerOrigin: Marker? = null
     private var markerDirection: Marker? = null
     private var polyline: Polyline? = null
@@ -136,7 +136,7 @@ class MapsUtil {
         }
     }
 
-    suspend fun getRoute(context: Context): Routes {
+    suspend fun getRoute(context: Context, placeIdOrigin: String, placeIdDirection: String): Routes {
         var route: Routes? = null
         if (placeIdOrigin == null || placeIdDirection == null) {
             Toast.makeText(context, "Enter locations!", Toast.LENGTH_SHORT).show()
