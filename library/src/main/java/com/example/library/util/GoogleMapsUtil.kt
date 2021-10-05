@@ -43,7 +43,6 @@ class GoogleMapsUtil {
     }
 
 
-
     //////////////////////////////
 
     companion object {
