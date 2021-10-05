@@ -1,5 +1,6 @@
 package com.example.library.util
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -110,10 +111,11 @@ class GoogleMapsUtil {
         }
     }
 
-    fun getDeviceLocation(locationPermissionGranted: Boolean, activity: Activity ) {
+    @SuppressLint("MissingPermission")
+    fun getDeviceLocation(locationPermissionGranted: Boolean, activity: Activity, context: Context ) {
         try {
             if (locationPermissionGranted) {
-                val locationResult = fusedLocationProviderClient.lastLocation
+                val locationResult = LocationServices.getFusedLocationProviderClient(context).lastLocation
                 locationResult.addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
                         lastKnownLocation = task.result
