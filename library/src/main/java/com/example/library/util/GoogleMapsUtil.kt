@@ -112,7 +112,8 @@ class GoogleMapsUtil {
     }
 
     @SuppressLint("MissingPermission")
-    fun getDeviceLocation(locationPermissionGranted: Boolean, activity: Activity, context: Context ) {
+    fun getDeviceLocation(locationPermissionGranted: Boolean, activity: Activity,
+        context: Context, map: GoogleMap) {
         try {
             if (locationPermissionGranted) {
                 val locationResult = LocationServices.getFusedLocationProviderClient(context).lastLocation
