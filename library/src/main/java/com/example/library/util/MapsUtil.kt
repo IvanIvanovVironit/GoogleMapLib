@@ -11,6 +11,9 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import com.example.library.api.GoogleMapApi
+import com.example.library.common.Result
+import com.example.library.data.GoogleMapRepository
 import com.example.library.data.PlaceInfo
 import com.example.library.data.Routes
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -27,24 +30,9 @@ import com.google.maps.android.PolyUtil
 import kotlinx.coroutines.coroutineScope
 import okhttp3.Route
 import java.io.IOException
+import javax.inject.Inject
 
-class GoogleMapsUtil {
-
-    fun onAutoComplete(fragment: AutocompleteSupportFragment) {
-        fragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
-        fragment.setCountries("AU", "NZ", "USA", "BLR", "RUS")
-    }
-
-    fun getPolylineOptions(): PolylineOptions {
-        val options = PolylineOptions()
-        options.color(Color.BLUE)
-        options.width(15f)
-        options.clickable(true)
-        return options
-    }
-
-
-    //////////////////////////////
+class MapsUtil @Inject constructor(private val repository: GoogleMapRepository){
 
     companion object {
         private const val DEFAULT_ZOOM = 15
@@ -145,30 +133,43 @@ class GoogleMapsUtil {
         }
     }
 
-    suspend fun getRoute(context: Context) {
+    suspend fun getRoute(context: Context): Routes {
+        var route: Routes? = null
         if (placeIdOrigin == null || placeIdDirection == null) {
             Toast.makeText(context, "Enter locations!", Toast.LENGTH_SHORT).show()
         } else {
             coroutineScope {
-                var route: Routes? = null
                 try {
                     Log.d(
                         TAG,
                         "place_id:$placeIdOrigin\", \"place_id:$placeIdDirection"
                     )
-//                    route = mGoogleMapViewModel.getRoutes(
-//                        "place_id:$placeIdOrigin",
-//                        "place_id:$placeIdDirection"
-//                    )!![0]
-//                    mGoogleMapViewModel.setRoute(route)
+                    route = getRoutes(
+                        "place_id:$placeIdOrigin",
+                        "place_id:$placeIdDirection"
+                    )!![0]
                 } catch (e: Exception) {
                     Log.e(TAG, e.message.toString())
                 }
                 if (route != null) {
                     val listLatLng: List<LatLng> =
-                        PolyUtil.decode(route.overviewPolyline.points)
+                        PolyUtil.decode(route!!.overviewPolyline.points)
 //                    mGoogleMapViewModel.setPolyline(listLatLng)
                 }
+            }
+        }
+        return route!!
+    }
+
+    suspend fun getRoutes(origin: String, destination: String): List<Routes>? {
+        when (val result = repository.getRoutes(origin, destination)) {
+            is Result.Success -> {
+                return result.value
+            }
+            is Result.Failure -> {
+                val exception = result.throwable.localizedMessage
+                Log.e(TAG, "Error! GoogleMapViewModel.getRoutes is Failure \n$exception")
+                return null
             }
         }
     }
@@ -220,5 +221,19 @@ class GoogleMapsUtil {
                     "\nStart Location: $startLocation\nEnd Location: $endLocation",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+
+    fun onAutoComplete(fragment: AutocompleteSupportFragment) {
+        fragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))
+        fragment.setCountries("AU", "NZ", "USA", "BLR", "RUS")
+    }
+
+    fun getPolylineOptions(): PolylineOptions {
+        val options = PolylineOptions()
+        options.color(Color.BLUE)
+        options.width(15f)
+        options.clickable(true)
+        return options
     }
 }
