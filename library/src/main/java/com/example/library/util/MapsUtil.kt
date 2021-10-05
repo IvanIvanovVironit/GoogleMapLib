@@ -32,11 +32,12 @@ import okhttp3.Route
 import java.io.IOException
 import javax.inject.Inject
 
-class MapsUtil @Inject constructor(private val repository: GoogleMapRepository){
+class MapsUtil {
+
+    @Inject private lateinit var repository: GoogleMapRepository
 
     companion object {
         private const val DEFAULT_ZOOM = 15
-        private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
         const val TAG = "TAG"
     }
 
@@ -161,7 +162,7 @@ class MapsUtil @Inject constructor(private val repository: GoogleMapRepository){
         return route!!
     }
 
-    suspend fun getRoutes(origin: String, destination: String): List<Routes>? {
+    suspend fun getRoutes (origin: String, destination: String): List<Routes>? {
         when (val result = repository.getRoutes(origin, destination)) {
             is Result.Success -> {
                 return result.value
