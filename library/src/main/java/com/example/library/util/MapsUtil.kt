@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 class MapsUtil {
 
-    @Inject private lateinit var repository: GoogleMapRepository
+    @Inject lateinit var repository: GoogleMapRepository
 
     companion object {
         private const val DEFAULT_ZOOM = 15
