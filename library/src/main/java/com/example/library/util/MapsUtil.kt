@@ -141,24 +141,22 @@ class MapsUtil {
         if (placeIdOrigin == null || placeIdDirection == null) {
             Toast.makeText(context, "Enter locations!", Toast.LENGTH_SHORT).show()
         } else {
-            coroutineScope {
-                try {
-                    Log.d(
-                        TAG,
-                        "place_id:$placeIdOrigin\", \"place_id:$placeIdDirection"
-                    )
-                    route = getRoutes(
-                        "place_id:$placeIdOrigin",
-                        "place_id:$placeIdDirection"
-                    )!![0]
-                } catch (e: Exception) {
-                    Log.e(TAG, e.message.toString())
-                }
-                if (route != null) {
-                    val listLatLng: List<LatLng> =
-                        PolyUtil.decode(route!!.overviewPolyline.points)
-//                    mGoogleMapViewModel.setPolyline(listLatLng)
-                }
+            try {
+                Log.d(
+                    TAG,
+                    "place_id:$placeIdOrigin\", \"place_id:$placeIdDirection"
+                )
+                route = getRoutes(
+                    "place_id:$placeIdOrigin",
+                    "place_id:$placeIdDirection"
+                )!![0]
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+            }
+            if (route != null) {
+                val listLatLng: List<LatLng> =
+                    PolyUtil.decode(route.overviewPolyline.points)
+            //                    mGoogleMapViewModel.setPolyline(listLatLng)
             }
         }
         return route!!
@@ -173,6 +171,7 @@ class MapsUtil {
             .build()
 
         repository = GoogleMapRepository(provideGoogleApiLib(provideRetrofitLib))
+
         when (val result = repository!!.getRoutes(origin, destination)) {
             is Result.Success -> {
                 return result.value
