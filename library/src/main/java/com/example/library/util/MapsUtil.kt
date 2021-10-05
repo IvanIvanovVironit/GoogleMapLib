@@ -136,7 +136,8 @@ class MapsUtil {
         }
     }
 
-    suspend fun getRoute(context: Context, placeIdOrigin: String, placeIdDirection: String): Routes {
+    suspend fun getRoute(context: Context, placeIdOrigin: String, placeIdDirection: String): List<LatLng> {
+        var listLatLng: List<LatLng> = emptyList()
         var route: Routes? = null
         if (placeIdOrigin == null || placeIdDirection == null) {
             Toast.makeText(context, "Enter locations!", Toast.LENGTH_SHORT).show()
@@ -154,12 +155,11 @@ class MapsUtil {
                 Log.e(TAG, e.message.toString())
             }
             if (route != null) {
-                val listLatLng: List<LatLng> =
-                    PolyUtil.decode(route.overviewPolyline.points)
-            //                    mGoogleMapViewModel.setPolyline(listLatLng)
+                listLatLng = PolyUtil.decode(route.overviewPolyline.points)
+//                                mGoogleMapViewModel.setPolyline(listLatLng)
             }
         }
-        return route!!
+        return listLatLng
     }
 
     suspend fun getRoutes (origin: String, destination: String): List<Routes>? {
