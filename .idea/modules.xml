@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/GoogleMapLib.iml" filepath="$PROJECT_DIR$/.idea/GoogleMapLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/GoogleMapLibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/GoogleMapLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/GoogleMapLibrary.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/GoogleMapLibrary.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/GoogleMapLibrary.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/GoogleMapLibrary.library.iml" />
     </modules>
   </component>
 </project>
