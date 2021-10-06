@@ -27,9 +27,9 @@ dependencies {
 #### 3. Next you must call class MapsUtil() in your Kotlin class and implement functions and pass parameters into it.
 For example:
 ```kotlin
-   MapsUtil().geoLocate(
+   val markerOptions = MapsUtil().geoLocate(
         searchString,
         requreContext(),
         map
-    )
+   )
 ```
