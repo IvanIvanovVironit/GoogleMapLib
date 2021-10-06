@@ -7,12 +7,12 @@ import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-//@Singleton
-class GoogleMapRepository (private val api: GoogleMapApi)  {
+
+class GoogleMapRepository (private val api: GoogleMapApi, private val KEY: String)  {
 
     suspend fun getInfo(id: String): Result<PlaceInfo> {
         return try {
-            val response = api.getInfo(id)
+            val response = api.getInfo(id, KEY)
             val data = response.result
             Result.Success(data)
         } catch (exception: IOException) {
@@ -26,9 +26,8 @@ class GoogleMapRepository (private val api: GoogleMapApi)  {
 
     suspend fun getRoutes(origin: String, destination: String): Result<List<Routes>> {
         return try {
-            val response = api.getRoutes(origin, destination)
+            val response = api.getRoutes(origin, destination, KEY)
             val data = response.routes
-//            Log.e(TAG, "data = $data\nresponse = $response")
             Result.Success(data)
         } catch (exception: IOException) {
             Result.Failure(exception)
