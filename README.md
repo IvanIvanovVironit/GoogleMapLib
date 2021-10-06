@@ -1,30 +1,30 @@
 # GoogleMapLib
-##This library was created for:
+## This library was created for:
 + determining own location
 + searching places on query
 + creating route between to places
 
-##How use this Library
-###Getting Started (Gradle / Android Studio)
+## How use this Library
+### Getting Started (Gradle / Android Studio)
 1. Add gradle dependency to your application.
    Add it in your root build.gradle at the end of repositories:
    ```
    allprojects {
-    repositories {
-    ...
-        maven { url 'https://jitpack.io' }
-    }
+      repositories {
+      ...
+         maven { url 'https://jitpack.io' }
+      }
    }
    ```
    
-   Add the dependency
+2.   Add the dependency
    ```
    dependencies {
-    implementation 'com.github.IvanIvanovVironit:GoogleMapLib:0.3.4'
+      implementation 'com.github.IvanIvanovVironit:GoogleMapLib:0.3.4'
    }
    ```
    
-2. Next you must call class MapsUtil() and implement functions and pass parameters into it.
+3. Next you must call class MapsUtil() and implement functions and pass parameters into it.
    For example: 
    ```kotlin
    MapsUtil().geoLocate(
