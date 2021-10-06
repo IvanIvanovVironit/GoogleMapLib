@@ -5,12 +5,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class PlaceInfo(
-//    val address_components : List<Address_components>,
     val adr_address : String,
     val business_status : String,
     val formatted_address : String,
     val formatted_phone_number : String,
-//    val geometry : Geometry,
     val icon : String,
     val icon_background_color : String,
     val icon_mask_base_uri : String,
@@ -19,7 +17,6 @@ data class PlaceInfo(
     val opening_hours : Opening_hours,
     val photos : List<Photos>,
     val place_id : String,
-//    val plus_code : Plus_code,
     val rating : Double,
     val reference : String,
     val reviews : List<Reviews>,

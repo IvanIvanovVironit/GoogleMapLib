@@ -27,55 +27,14 @@ import java.io.IOException
 
 class MapsUtil {
 
-    private var repository: GoogleMapRepository? = null
-
     companion object {
         private const val DEFAULT_ZOOM = 15
         const val TAG = "TAG"
     }
 
-    private lateinit var map: GoogleMap
-    private lateinit var placesClient: PlacesClient
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-
+    private var repository: GoogleMapRepository? = null
     private var lastKnownLocation: Location? = null
-    private var mapType = true
-    private var markerPlace: Marker? = null
-    private var distance: String? = null
-    private var duration: String? = null
-    private var endLocation: String? = null
-    private var startLocation: String? = null
-    private var travelMode: String? = null
-    private var polyline: Polyline? = null
-    private var latLngMarker: LatLng? = null
 
-
-    private fun handleTouchEvent() {
-        map.apply {
-            setOnPoiClickListener {
-//                mGoogleMapViewModel.setPlaceId(it.placeId)
-//                Log.d(TAG, "PlaceId: ${it.placeId} ${it.name} ${it.latLng}")
-//                showMarkerInfo()
-            }
-            setOnMapLongClickListener {
-                latLngMarker = it
-                if (markerPlace == null) {
-                    markerPlace = map.addMarker(
-                        MarkerOptions()
-                            .title("${it.latitude},${it.longitude}")
-                            .position(it)
-                    )
-                } else {
-                    markerPlace?.remove()
-                    markerPlace = map.addMarker(
-                        MarkerOptions()
-                            .title("${it.latitude},${it.longitude}")
-                            .position(it)
-                    )
-                }
-            }
-        }
-    }
 
     @SuppressLint("MissingPermission")
     fun getDeviceLocation(
@@ -132,7 +91,7 @@ class MapsUtil {
         return route!!
     }
 
-    suspend fun getRoutes(origin: String, destination: String, KEY: String): List<Routes>? {
+    private suspend fun getRoutes(origin: String, destination: String, KEY: String): List<Routes>? {
         val provideRetrofitLib: Retrofit =
             Retrofit.Builder()
                 .baseUrl(GoogleMapApi.BASE_URL)
@@ -158,7 +117,6 @@ class MapsUtil {
 
     fun geoLocate(
         searchString: String,
-        typeMarker: Int,
         context: Context,
         map: GoogleMap
     ): MarkerOptions {
@@ -187,16 +145,6 @@ class MapsUtil {
         }
         return markerOptions!!
     }
-
-
-//    fun onPolylineClick(poliline: Polyline, context: Context) {
-//        Toast.makeText(
-//            context,
-//            "Travel Mode: $travelMode\nDuration = $duration\nDistance = $distance" +
-//                    "\nStart Location: $startLocation\nEnd Location: $endLocation",
-//            Toast.LENGTH_SHORT
-//        ).show()
-//    }
 
 
     fun onAutoComplete(fragment: AutocompleteSupportFragment) {
